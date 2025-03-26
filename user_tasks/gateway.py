@@ -16,6 +16,30 @@ from .serializer import TaskSerializer, TaskAssignSerializer, UserTaskSerializer
 from task_management import config
 
 
+def paginate_queryset(queryset, page, page_size):
+    """
+    Global pagination function for paginating querysets.
+
+    Args:
+        queryset (QuerySet): The queryset to paginate.
+        page (int): The current page number.
+        page_size (int): The number of items per page.
+
+    Returns:
+        dict: Paginated response with count, pages, and results.
+    """
+    paginator = Paginator(queryset, page_size)
+    paginated_data = paginator.get_page(page)
+
+    return {
+        "results": TaskSerializer(paginated_data, many=True).data,
+        "count": paginator.count,
+        "total_pages": paginator.num_pages,
+        "current_page": paginated_data.number,
+        "next_page": paginated_data.next_page_number() if paginated_data.has_next() else None,
+        "previous_page": paginated_data.previous_page_number() if paginated_data.has_previous() else None,
+    }
+
 def create_user(serializer):
     """
     Create a new user and return the serialized object.
@@ -65,9 +89,9 @@ def list_tasks(page, page_size, order_by):
         dict: Paginated list of tasks in serialized format.
     """
     tasks = Task.objects.all().order_by(order_by)
-    paginated_data = Paginator(tasks, page_size).get_page(page)
-    tasks = TaskSerializer(paginated_data, many=True)
-    return tasks.data
+    
+    return paginate_queryset(queryset=tasks, page=page, page_size=page_size)
+
 
 
 def retrieve_task(task_id):

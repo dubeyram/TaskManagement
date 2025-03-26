@@ -138,13 +138,20 @@ python manage.py runserver
 }
 ```
 
-### 4. **Get All Tasks**
-- **Endpoint:** `GET /task/`
+```
+
+### 4. **Get All Tasks (Paginated)**
+- **Endpoint:** `GET /task/?page=1&page_size=5`
 - **Description:** Retrieves all tasks with pagination.
 - **Response:**
 ```json
 {
-    "tasks": [
+    "count": 100,
+    "total_pages": 20,
+    "current_page": 1,
+    "next_page": 2,
+    "previous_page": null,
+    "results": [
         {
             "id": 1,
             "name": "Initial Setup",
