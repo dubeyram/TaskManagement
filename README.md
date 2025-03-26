@@ -1,7 +1,7 @@
 # Task Management Setup Guide
 
 ## Overview
-The Task Management API is a Django-based backend system that provides task management functionalities, including task creation, assignment, and retrieval of tasks assigned to users.
+The Task Management API is a Django-based backend system that provides task management functionalities, including user and task creation, task assignment, list all the tasks, and retrieval of tasks assigned to users.
 
 ## Features
 - User creation
@@ -13,7 +13,6 @@ The Task Management API is a Django-based backend system that provides task mana
 ## Technology Stack
 - **Backend**: Django, Django REST Framework (DRF)
 - **Database**: PostgreSQL
-- **Deployment**: Can be hosted on AWS, DigitalOcean, or Heroku
 
 ---
 
