@@ -180,6 +180,13 @@ python manage.py runserver
 
 ---
 
+## Postman Collection
+- The Postman collection for this API can be found [here](https://ramgopaldubey.postman.co/workspace/RamGopal-Dubey's-Workspace~2669db3a-425a-4b2e-8e33-384c031cc97a/collection/43448931-b53e329c-6048-4a1a-a56e-5de35d74ca15?action=share&creator=43448931&active-environment=43448931-94367d10-6f2b-4b8e-9854-5a51e7f66342).
+- **Important:** Select the environment as **local** while using the API.
+
+
+---
+
 ## Error Handling
 ### Common Status Codes:
 - `200 OK` – Successful requests
