@@ -138,7 +138,6 @@ python manage.py runserver
 }
 ```
 
-```
 
 ### 4. **Get All Tasks (Paginated)**
 - **Endpoint:** `GET /task/?page=1&page_size=5`
