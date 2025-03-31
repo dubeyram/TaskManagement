@@ -6,4 +6,7 @@ class UsersTasksConfig(AppConfig):
     name = "user_tasks"
 
     def ready(self):
+        """
+        Import signals
+        """
         import user_tasks.signals

@@ -5,6 +5,9 @@ Signals for User Tasks
 from django.db.models.signals import post_save
 from django.dispatch import receiver, Signal
 from user_tasks.models import User
+from django.core.mail import send_mail
+from .tasks import send_welcome_email
+
 
 
 @receiver(post_save, sender=User)
@@ -14,6 +17,7 @@ def new_user_created(sender, instance, created, **kwargs):
     """
 
     if created:
+        send_welcome_email.delay(instance.email, instance.username)
         print(f"User Created for email: {instance.email}")
 
 
