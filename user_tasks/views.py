@@ -62,12 +62,16 @@ class CreateListTask(APIView):
             serializer = TaskSerializer(data=request.data)
             if serializer.is_valid():
                 create_task(serializer)
-                create_task_signal.send(sender=None, task=serializer.data, extra_data={'created':True})
+                create_task_signal.send(
+                    sender=None, task=serializer.data, extra_data={"created": True}
+                )
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            create_task_signal.send(sender=None, task=None, extra_data={'created': False}, error=str(e))
-            return Response({'error':str(e)})
+            create_task_signal.send(
+                sender=None, task=None, extra_data={"created": False}, error=str(e)
+            )
+            return Response({"error": str(e)})
 
 
 class TaskAssign(APIView):
@@ -85,7 +89,11 @@ class TaskAssign(APIView):
             serializer = TaskAssignSerializer(task, data=request.data)
             if serializer.is_valid():
                 assigned = assign_task(serializer)
-                user_task_assigned.send(sender=None, task=assigned, extra_data={'user_id':assigned.get('assigned_users')})
+                user_task_assigned.send(
+                    sender=None,
+                    task=assigned,
+                    extra_data={"user_id": assigned.get("assigned_users")},
+                )
                 return Response(assigned, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
