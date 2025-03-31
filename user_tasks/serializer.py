@@ -44,7 +44,10 @@ class TaskAssignSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ["assigned_users"]
+        fields = ["assigned_users", 'name']
+        extra_kwargs={
+            "name": {"required": False}
+        }
 
 
 class UserSerializer(serializers.ModelSerializer):

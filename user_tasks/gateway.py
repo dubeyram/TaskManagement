@@ -36,9 +36,16 @@ def paginate_queryset(queryset, page, page_size):
         "count": paginator.count,
         "total_pages": paginator.num_pages,
         "current_page": paginated_data.number,
-        "next_page": paginated_data.next_page_number() if paginated_data.has_next() else None,
-        "previous_page": paginated_data.previous_page_number() if paginated_data.has_previous() else None,
+        "next_page": (
+            paginated_data.next_page_number() if paginated_data.has_next() else None
+        ),
+        "previous_page": (
+            paginated_data.previous_page_number()
+            if paginated_data.has_previous()
+            else None
+        ),
     }
+
 
 def create_user(serializer):
     """
@@ -89,9 +96,8 @@ def list_tasks(page, page_size, order_by):
         dict: Paginated list of tasks in serialized format.
     """
     tasks = Task.objects.all().order_by(order_by)
-    
-    return paginate_queryset(queryset=tasks, page=page, page_size=page_size)
 
+    return paginate_queryset(queryset=tasks, page=page, page_size=page_size)
 
 
 def retrieve_task(task_id):
