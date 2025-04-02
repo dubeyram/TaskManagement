@@ -9,6 +9,9 @@ The Task Management API is a Django-based backend system that provides task mana
 - Assigning tasks to multiple users
 - Pagination for listing tasks
 - Structured JSON responses
+- Implemented Signals for handling user creation and task creation
+- Implemented Celery for asynchronous task creation
+- Implemented Celery Beat for periodic reminder emails to users
 
 ## Technology Stack
 - **Backend**: Django, Django REST Framework (DRF)
@@ -69,6 +72,16 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
+### 9. Run Celery
+```bash
+celery -A task_management worker -l info
+```
+
+### 10. Run Celery Beat
+```bash
+celery -A task_management beat -l info
+```
+
 
 ---
 
