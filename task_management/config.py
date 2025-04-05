@@ -17,3 +17,4 @@ DEFAULT_DATABASE = {
 
 TASK_NOT_FOUND = "Task not found"
 USER_NOT_FOUND = "User not found"
+EMAIL_FROM = os.getenv("EMAIL_FROM")
