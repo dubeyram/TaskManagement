@@ -82,6 +82,8 @@ celery -A task_management worker -l info
 celery -A task_management beat -l info
 ```
 
+### 11. Implemented Custom Middleware for logging api calls and responses time
+
 
 ---
 
