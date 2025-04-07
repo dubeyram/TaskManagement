@@ -55,6 +55,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "user_tasks.middleware.logger_middleware.LoggerMiddleware",
+    "user_tasks.middleware.timing.TimingMiddleware",
 ]
 
 ROOT_URLCONF = "task_management.urls"
@@ -159,3 +161,16 @@ CELERY_TASK_SERIALIZER = "json"
 
 # Celery Beat Configuration
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': { 'class': 'logging.StreamHandler' },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
