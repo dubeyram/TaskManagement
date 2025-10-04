@@ -8,7 +8,7 @@ This module defines:
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-
+from django.core.validators import EmailValidator
 
 class User(AbstractUser):
     """
@@ -24,7 +24,7 @@ class User(AbstractUser):
     """
 
     username = models.CharField(unique=True, max_length=150)
-    email = models.EmailField(unique=True, verbose_name="email")
+    email = models.EmailField(unique=True, verbose_name="email",validators=[EmailValidator()])
     mobile = models.CharField(max_length=15, unique=True, blank=True, null=True)
 
     def __str__(self):

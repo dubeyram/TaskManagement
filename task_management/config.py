@@ -12,7 +12,7 @@ DEFAULT_DATABASE = {
     "USER": os.getenv("DATABASE_USER"),
     "PASSWORD": os.getenv("DATABASE_PASSWORD"),
     "HOST": os.getenv("HOST"),
-    "PORT": int(os.getenv("PORT")),
+    "PORT": os.getenv("PORT"),
 }
 
 TASK_NOT_FOUND = "Task not found"
