@@ -9,6 +9,7 @@ This module defines:
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import EmailValidator
+from django.utils.timezone import now
 
 class User(AbstractUser):
     """
@@ -29,6 +30,14 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.first_name
+    
+    def save(self, *args, **kwargs):
+        self.username = self.username.lower().strip()
+
+        # Optionally auto-fill username from email.
+        if not self.username:
+            self.username = self.email
+        super().save(*args, **kwargs)
 
 
 class Task(models.Model):

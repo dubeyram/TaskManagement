@@ -63,9 +63,6 @@ def create_user(serializer):
     serializer.validated_data["password"] = make_password(
         serializer.validated_data["password"]
     )
-    username = serializer.validated_data["email"].split("@")[0]
-    epoch_time = int(now().timestamp())
-    serializer.validated_data["username"] = f"{username}_{epoch_time}"
 
     return serializer.save()
 
