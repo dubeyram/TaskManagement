@@ -8,12 +8,13 @@ This module provides helper functions for:
 - Fetching tasks assigned to a specific user
 """
 
-from django.utils.timezone import now
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from .models import Task, User
 from .serializer import TaskSerializer, TaskAssignSerializer, UserTaskSerializer
 from task_management import config
+
+User = get_user_model()
 
 
 def paginate_queryset(queryset, page, page_size):
@@ -47,24 +48,19 @@ def paginate_queryset(queryset, page, page_size):
     }
 
 
+
 def create_user(serializer):
     """
-    Create a new user and return the serialized object.
+    Gateway function to create a new user.
 
-    - Hashes the password before saving.
-    - Generates a unique username based on email prefix + epoch timestamp.
-
-    Args:
-        serializer (UserSerializer): Validated serializer containing user data.
-
-    Returns:
-        User: The newly created user instance.
+    - Uses UserManager.create_user() to handle username generation,
+      password hashing, and validation.
+    - Keeps a single entry point for user creation logic.
     """
-    serializer.validated_data["password"] = make_password(
-        serializer.validated_data["password"]
-    )
 
-    return serializer.save()
+    validated_data = serializer.validated_data
+    user = User.objects.create_user(**validated_data)
+    return user
 
 
 def create_task(serializer):

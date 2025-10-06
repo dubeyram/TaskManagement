@@ -9,34 +9,53 @@ This module defines:
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import EmailValidator
-from django.utils.timezone import now
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.hashers import make_password
+from task_management.utils import generate_secure_password
+
+
+class UserManager(BaseUserManager):
+    def create_user(self, username=None, email=None, password=None, **extra_fields):
+        if not email:
+            raise ValueError("Users must have an email address")
+
+        email = self.normalize_email(email)
+        username = username or email
+
+        if not password:
+            password = generate_secure_password()
+
+        user = self.model(
+            username=username.lower().strip(),
+            email=email.lower().strip(),
+            **extra_fields
+        )
+        user.password = make_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, username=None, email=None, password=None, **extra_fields):
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_active", True)
+        return self.create_user(username, email, password, **extra_fields)
+
 
 class User(AbstractUser):
-    """
-    Custom user model extending Django's AbstractUser.
-
-    Fields:
-        - `username` (CharField): Unique identifier for the user.
-        - `email` (EmailField): Unique email for the user.
-        - `mobile` (CharField, optional): Unique mobile number.
-
-    Methods:
-        - `__str__`: Returns the first name of the user.
-    """
-
     username = models.CharField(unique=True, max_length=150)
-    email = models.EmailField(unique=True, verbose_name="email",validators=[EmailValidator()])
+    email = models.EmailField(unique=True, validators=[EmailValidator()])
     mobile = models.CharField(max_length=15, unique=True, blank=True, null=True)
 
-    def __str__(self):
-        return self.first_name
-    
-    def save(self, *args, **kwargs):
-        self.username = self.username.lower().strip()
+    objects = UserManager() # type: ignore
 
-        # Optionally auto-fill username from email.
-        if not self.username:
-            self.username = self.email
+    def __str__(self):
+        return self.first_name or self.username
+
+    def save(self, *args, **kwargs):
+        if self.username:
+            self.username = self.username.lower().strip()
+        if self.email:
+            self.email = self.email.lower().strip()
         super().save(*args, **kwargs)
 
 

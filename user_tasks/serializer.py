@@ -5,12 +5,14 @@ This module provides serializers for handling:
 - Task creation and updates
 - Assigning users to tasks
 - User creation and authentication
-- Retrieving tasks assigned to users
+- Retrieving tasks assigned
 """
 
 from rest_framework import serializers
 from .models import Task, User
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class TaskSerializer(serializers.ModelSerializer):
     """
@@ -61,11 +63,11 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ["first_name", "last_name", "email", "username", "password", "mobile"]
         extra_kwargs = {
             "first_name": {"required": True},
-            "last_name": {"required": False},
             "email": {"required": True},
             "username": {"read_only": True},
-            "password": {"write_only": True},
+            "password": {"write_only": True, "required": False},
         }
+
 
 
 class UserTaskSerializer(serializers.ModelSerializer):

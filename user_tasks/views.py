@@ -30,13 +30,12 @@ class CreateUser(APIView):
 
     Handles user creation, password encryption, and username generation.
     """
-
+    
     def post(self, request):
-        """Create a new user and return the serialized object."""
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            create_user(serializer)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            user = create_user(serializer)
+            return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
