@@ -13,6 +13,16 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from user_tasks.manager import UserManager
 
 class User(AbstractUser):
+    """
+    Custom user model extending Django's AbstractUser.
+    Fields:
+        - `username` (CharField): Unique username for the user.
+        - `email` (EmailField): Unique email address for the user.
+        - `mobile` (CharField): Optional mobile number for the user.
+    Methods:
+        - `__str__`: Returns the user's first name or username.
+        - `save`: Overrides save method to normalize username and email.
+    """
     username = models.CharField(unique=True, max_length=150)
     email = models.EmailField(unique=True, validators=[EmailValidator()])
     mobile = models.CharField(max_length=15, unique=True, blank=True, null=True)

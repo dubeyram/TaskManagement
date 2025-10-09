@@ -4,6 +4,12 @@ from task_management.utils import generate_secure_password
 
 
 class UserManager(BaseUserManager):
+    """
+    Custom user manager to handle user creation with email as the unique identifier.
+    Methods:
+        - `create_user`: Creates and saves a regular user with the given email and password.
+        - `create_superuser`: Creates and saves a superuser with the given email and password.
+    """
     def create_user(self, username=None, email=None, password=None, **extra_fields):
         if not email:
             raise ValueError("Users must have an email address")
