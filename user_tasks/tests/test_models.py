@@ -2,7 +2,11 @@
 import pytest
 from django.db import IntegrityError
 from user_tasks.models import User, Task
+from django.contrib.auth import get_user_model
+from user_tasks.serializer import UserSerializer
+from user_tasks.gateway import create_user
 
+User = get_user_model()
 
 @pytest.mark.django_db
 def test_user_creation():
@@ -82,3 +86,14 @@ def test_task_assign_users():
     assert task.assigned_users.count() == 2
     assert user1 in task.assigned_users.all()
     assert user2 in task.assigned_users.all()
+
+
+@pytest.mark.django_db
+def test_create_user_gateway():
+    data = {"email": "ram@example.com", "first_name": "Ram"}
+    serializer = UserSerializer(data=data)
+    assert serializer.is_valid()
+    user = create_user(serializer)
+    assert user.username.startswith("ram")
+    assert user.check_password(user.password) is False  # password is hashed
+    assert User.objects.filter(email="ram@example.com").exists()
