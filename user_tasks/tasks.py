@@ -10,6 +10,10 @@ from celery import shared_task
 from django.core.mail import send_mail
 from user_tasks.models import User
 from task_management.config import EMAIL_FROM
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 @shared_task
@@ -20,7 +24,7 @@ def send_welcome_email(email, username):
     from_email = EMAIL_FROM
     
     send_mail(subject, message, from_email, [email])
-    print("Mail Sent Successfully using celery")
+    logger.info("Mail Sent Successfully using celery")
     return f"Email sent to {email}"
 
 

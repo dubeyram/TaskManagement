@@ -7,7 +7,9 @@ from django.dispatch import receiver, Signal
 from user_tasks.models import User
 from django.core.mail import send_mail
 from .tasks import send_welcome_email
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 @receiver(post_save, sender=User)
@@ -18,7 +20,7 @@ def new_user_created(sender, instance, created, **kwargs):
 
     if created:
         send_welcome_email.delay(instance.email, instance.username)
-        print(f"User Created for email: {instance.email}")
+        logger.info(f"User Created for email: {instance.email}")
 
 
 user_task_assigned = Signal()
@@ -29,7 +31,7 @@ def user_task_assigned_(signal, task, extra_data, **kwargs):
     """
     Signal when a user is assigned to a task
     """
-    print(
+    logger.info(
         f"Task: {task.get('name')} is assigned to a these users: {extra_data.get('user_id')}"
     )
 
@@ -44,12 +46,12 @@ def task_created(signal, task, extra_data, **kwargs):
     """
     if extra_data.get("created"):
         if not task.get("assigned_users"):
-            print(
+            logger.info(
                 f"New task: {task.get('name')} created successfully, but not assigned to any users yet."
             )
         else:
-            print(
+            logger.info(
                 f"New task: {task.get('name')} created successfully, and assigned to these users: {task.get('assigned_users')}"
             )
     else:
-        print(f"Unable to create task: {kwargs.get('error')}")
+        logger.error(f"Unable to create task: {kwargs.get('error')}")
