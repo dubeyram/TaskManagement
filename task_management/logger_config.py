@@ -31,7 +31,7 @@ LOGGING = {
         },
     },
 
-    "root": {  # Root logger — catches everything not handled by app loggers
+    "root": {
         "handlers": ["console", "file"],
         "level": "INFO",
     },
@@ -40,7 +40,7 @@ LOGGING = {
         "django": {
             "handlers": ["console", "file"],
             "level": "INFO",
-            "propagate": False,  # 👈 so Django logs also use your format
+            "propagate": False, 
         },
         "myapp": {
             "handlers": ["console", "file"],
@@ -49,10 +49,3 @@ LOGGING = {
         },
     },
 }
-
-# Apply immediately (so even shell and migrations use it)
-logging.config.dictConfig(LOGGING)
-
-import logging
-logger = logging.getLogger(__name__)
-logger.info("Logger finally working properly")

@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from task_management import config
 from dotenv import load_dotenv
+from .logger_config import LOGGING
 
 load_dotenv()
 

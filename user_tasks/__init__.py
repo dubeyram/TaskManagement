@@ -1,1 +1,5 @@
-default_app_config = "user_tasks.apps.MyAppConfig"
+import logging.config
+from task_management.logger_config import LOGGING
+
+logging.config.dictConfig(LOGGING)
+

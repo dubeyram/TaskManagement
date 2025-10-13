@@ -22,6 +22,10 @@ from .gateway import (
     get_user_tasks,
 )
 from task_management import config
+import logging
+
+logger = logging.getLogger(__name__)
+logger.info("Logger working properly in views")
 
 
 class CreateUser(APIView):
